@@ -1,0 +1,39 @@
+function showLoading() {
+    var ol = document.getElementById('loading-overlay');
+    var fill = document.getElementById('loading-fill');
+    var stepEl = document.getElementById('loading-step');
+    if (!ol) return;
+    ol.classList.add('active');
+    var steps = [[15,'Applying weights...'],[42,'Running 1,000 simulations...'],[74,'Building charts...'],[95,'Almost there...']];
+    var idx = 0;
+    fill.style.width = '0%';
+    function tick() {
+        if (idx >= steps.length) return;
+        var s = steps[idx++];
+        fill.style.width = s[0] + '%';
+        stepEl.textContent = s[1];
+        setTimeout(tick, 420);
+    }
+    setTimeout(tick, 100);
+}
+function hideLoading() {
+    var ol = document.getElementById('loading-overlay');
+    var fill = document.getElementById('loading-fill');
+    if (!ol) return;
+    fill.style.width = '100%';
+    setTimeout(function() { ol.classList.remove('active'); fill.style.width = '0%'; }, 300);
+}
+document.addEventListener('click', function(e) {
+    if (e.target && e.target.id === 'run_button') { showLoading(); }
+});
+var _origOpen = XMLHttpRequest.prototype.open;
+XMLHttpRequest.prototype.open = function() {
+    this.addEventListener('loadend', function() { setTimeout(hideLoading, 200); });
+    _origOpen.apply(this, arguments);
+};
+window.switchTab = function(tabId, btn) {
+    document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.tab-panel').forEach(function(p) { p.style.display = 'none'; });
+    document.getElementById('tab-' + tabId).style.display = 'block';
+    btn.classList.add('active');
+};
