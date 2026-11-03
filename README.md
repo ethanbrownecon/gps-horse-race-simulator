@@ -4,8 +4,6 @@ A collaborative portfolio project comparing traditional past-performance
 features with GPS-derived race features, then visualizing race scenarios in an
 interactive Dash app.
 
-Developed by Ethan Brown and Aiden.
-
 ## What is included
 
 - `gps_horse_race_simulator.ipynb` — feature engineering, model training and
